@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 /**
@@ -75,6 +76,9 @@ public class JobData {
 
             String aValue = row.get(column);
 
+            aValue = aValue.toLowerCase();
+            value = value.toLowerCase();
+
             if (aValue.contains(value)) {
                 jobs.add(row);
             }
@@ -94,8 +98,35 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (int i = 0; i < allJobs.size(); i++) {
+
+           for (Map.Entry<String, String> row : allJobs.get(i).entrySet()) {
+
+              String aValue = row.getValue();
+
+              aValue = aValue.toLowerCase();
+              value = value.toLowerCase();
+
+              String [] aValueArray = aValue.split("[, ]");
+              String [] valueArray = value.split(" ");
+
+              for(int j = 0; j < aValueArray.length;j++){
+
+                  for(int k = 0; k < valueArray.length; k++){
+
+                      if(!jobs.contains(allJobs.get(i))){
+                          if(aValueArray[j].equals(valueArray[k])){
+                              jobs.add(allJobs.get(i));
+                          }
+                      }
+                  }
+              }
+           }
+       }
+
+        return jobs;
     }
 
     /**
